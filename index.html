@@ -1,0 +1,585 @@
+import React, { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import {
+  FlaskConical,
+  Dna,
+  ShieldCheck,
+  Microscope,
+  Pill,
+  Trophy,
+  Mail,
+  ExternalLink,
+  Users,
+  BookOpen,
+  ArrowRight,
+  Sparkles,
+  Languages,
+  GraduationCap,
+} from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
+const content = {
+  zh: {
+    nav: ["简介", "研究方向", "代表成果", "论文", "招聘合作"],
+    brand: "张永辉教授课题组",
+    brandSub: "清华大学药学院",
+    heroBadge: "类异戊二烯代谢与免疫调控",
+    heroTitle: "张永辉教授课题组",
+    heroSubtitle: "类异戊二烯代谢与免疫调控",
+    heroText:
+      "以类异戊二烯代谢为切入点，解析免疫识别、炎症调控与药物干预的新机制，推动从基础发现到疫苗佐剂、细胞治疗和创新小分子药物的转化。",
+    ctaResearch: "探索研究方向",
+    ctaContact: "联系课题组",
+    highlightsTitle: "研究亮点",
+    highlights: [
+      "提出并发展“类异戊二烯代谢重塑免疫”的研究方向。",
+      "在γδ T细胞抗原识别、疫苗佐剂新机制、代谢中间体免疫调控和整合素药物设计等领域取得原创性成果。",
+      "作为（共同）通讯作者在Nature、Cell、Immunity等期刊发表多篇代表性论文。",
+      "围绕免疫治疗、疫苗佐剂和创新药物研发建立从分子机制到临床转化的研究体系。",
+    ],
+    aboutEyebrow: "个人简介与研究愿景",
+    aboutName: "张永辉 教授",
+    aboutTitle:
+      "清华大学药学院长聘教授、博士生导师，清华北大生命科学联合中心研究员，教育部长江学者，英国皇家化学会会士（FRSC），树兰医学青年奖获得者。",
+    papersLabel: "代表论文",
+    patentsLabel: "授权专利",
+    aboutText1:
+      "张永辉教授长期聚焦类异戊二烯代谢与免疫调控，致力于解析代谢中间体如何塑造免疫识别、炎症反应和药物干预窗口。课题组在γδ T细胞抗原识别、甲羟戊酸通路与疫苗佐剂、FPP/GGPP等代谢中间体介导的免疫调控、整合素药物设计及创新小分子研发等方向取得多项原创性成果。",
+    aboutText2:
+      "课题组以类异戊二烯代谢为核心切入点，研究代谢中间体如何作为免疫信号、调控节点和药物靶点，连接化学生物学、免疫学、结构生物学与药物发现，建立从分子机制到疾病干预的原创研究体系。",
+    researchEyebrow: "Research Directions",
+    researchTitle: "研究方向",
+    researchDesc: "以代谢中间体为线索，跨越免疫识别、炎症调控、病原体逃逸与药物发现。",
+    researchDirections: [
+      {
+        title: "类异戊二烯代谢驱动的γδ T细胞抗原识别",
+        icon: Dna,
+        text: "解析膦抗原、BTN3A1/BTN2A1与Vγ9Vδ2 T细胞受体之间的分子互作，建立非HLA依赖免疫监视的新机制，并推动通用型γδ T细胞治疗策略开发。",
+      },
+      {
+        title: "甲羟戊酸通路与固有免疫调控",
+        icon: ShieldCheck,
+        text: "研究甲羟戊酸通路及GGPP等代谢产物如何影响树突状细胞、巨噬细胞和模式识别受体信号，发展代谢调控型疫苗佐剂和免疫增强策略。",
+      },
+      {
+        title: "FPP/GGPP等代谢中间体的免疫调控网络",
+        icon: Microscope,
+        text: "系统解析FPP、GGPP等类异戊二烯代谢中间体在炎症、屏障免疫、体液免疫和自身免疫中的作用，寻找可干预的代谢—免疫节点。",
+      },
+      {
+        title: "病原体类异戊二烯代谢与宿主免疫逃逸",
+        icon: FlaskConical,
+        text: "研究细菌、病毒和寄生虫如何利用或重编程类异戊二烯代谢，以逃逸宿主免疫或维持复制，为抗感染药物开发提供新靶点。",
+      },
+      {
+        title: "面向疾病干预的创新小分子药物设计",
+        icon: Pill,
+        text: "结合结构生物学、化学生物学和药物化学，发展整合素、KRAS、UPPS、GGPPS等靶点的小分子干预策略。",
+      },
+    ],
+    impactEyebrow: "Scientific Impact",
+    impactTitle: "科学贡献与代表性成果",
+    contributions: [
+      {
+        title: "阐明γδ T细胞识别膦抗原的分子机制",
+        text: "揭示膦抗原作为“分子胶”促进BTN3A1与BTN2A1形成功能性复合体，并阐明其激活Vγ9Vδ2 T细胞的“钳式”识别机制。",
+        refs: "Nature 2023 · Immunity 2019 · Immunity 2025",
+      },
+      {
+        title: "提出代谢调控型疫苗佐剂的新机制",
+        text: "发现甲羟戊酸通路可作为疫苗佐剂开发的药物靶点，抑制GGPP合成能够增强抗原呈递效率。",
+        refs: "Cell 2018",
+      },
+      {
+        title: "揭示FPP介导的跨组织免疫调控机制",
+        text: "发现FPP等类异戊二烯代谢中间体可通过离子通道相关机制参与局部炎症与系统性免疫调控。",
+        refs: "Nature 2026",
+      },
+      {
+        title: "建立整合素药物安全性设计的新原则",
+        text: "揭示小分子稳定整合素高亲和构象可能导致血栓风险的机制，并提出“水介导闭合态稳定”设计策略。",
+        refs: "Cell 2022",
+      },
+      {
+        title: "推进创新小分子药物研发",
+        text: "围绕KRAS G12D、细菌UPPS、寄生虫GGPPS等靶点开展药物发现研究，形成基础机制研究与药物转化平台。",
+        refs: "Cell Discovery 2022 · STM 2014",
+      },
+    ],
+    platformsEyebrow: "Translation Platforms",
+    platformsTitle: "转化方向与技术平台",
+    platformsDesc:
+      "围绕免疫治疗、疫苗佐剂和创新小分子药物研发，建立从分子机制到临床转化的技术体系。",
+    platforms: [
+      {
+        title: "γδ T细胞治疗平台",
+        text: "基于膦抗原识别和BTN3A1/BTN2A1机制，推进面向实体瘤的通用型γδ T细胞治疗策略。",
+      },
+      {
+        title: "新一代疫苗佐剂平台",
+        text: "围绕甲羟戊酸通路和GGPP调控机制，开发工艺简洁、成本可控、可增强体液与细胞免疫的新型佐剂体系。",
+      },
+      {
+        title: "创新小分子药物平台",
+        text: "开发整合素构象调控分子、KRAS G12D盐桥型抑制剂、UPPS抑制剂和抗寄生虫靶向分子。",
+      },
+    ],
+    honorsEyebrow: "Honors",
+    honorsTitle: "荣誉与奖励",
+    honors: [
+      "全国颠覆性技术创新大赛优秀奖（2024）",
+      "清华大学年度亮点成果（2023）",
+      "教育部长江学者（2021）",
+      "英国皇家化学会会士（FRSC，2021）",
+      "天津市自然科学奖二等奖（2020）",
+      "树兰医学青年奖（2019）",
+    ],
+    pubsEyebrow: "Selected Publications",
+    pubsTitle: "代表性论文",
+    joinEyebrow: "Join & Collaborate",
+    joinTitle: "招聘与合作",
+    joinText1:
+      "课题组长期欢迎具有化学生物学、免疫学、结构生物学、药物化学、细胞治疗、疫苗学、代谢组学、生物信息学和转化医学背景的博士后、博士生和科研人员加入。",
+    joinText2:
+      "我们鼓励跨学科合作，尤其欢迎围绕免疫治疗、疫苗佐剂、炎症疾病、抗感染药物和创新小分子研发的学术与产业合作。",
+    joinNote: "有意申请者可提供个人简历、代表性论文、研究兴趣陈述及推荐人信息。",
+    contactTitle: "联系方式",
+    website: "实验室网站",
+    email: "邮箱",
+    footer: "张永辉教授课题组 · 类异戊二烯代谢与免疫调控",
+  },
+  en: {
+    nav: ["About", "Research", "Discoveries", "Publications", "Join Us"],
+    brand: "Zhang Yonghui Lab",
+    brandSub: "School of Pharmaceutical Sciences, Tsinghua University",
+    heroBadge: "Isoprenoid Metabolism & Immune Regulation",
+    heroTitle: "Zhang Yonghui Lab",
+    heroSubtitle: "Isoprenoid Metabolism & Immune Regulation",
+    heroText:
+      "We investigate how isoprenoid metabolism shapes immune recognition, inflammatory regulation, and pharmacological intervention, translating basic discoveries into vaccine adjuvants, cell therapies, and innovative small-molecule medicines.",
+    ctaResearch: "Explore Research",
+    ctaContact: "Contact the Lab",
+    highlightsTitle: "Research Highlights",
+    highlights: [
+      "Proposed and advanced the research direction of isoprenoid-metabolism-driven immune remodeling.",
+      "Made original contributions to γδ T cell antigen recognition, vaccine adjuvant mechanisms, metabolic immune regulation, and integrin drug design.",
+      "Published representative papers in Nature, Cell, Immunity and other leading journals as corresponding or co-corresponding author.",
+      "Built an integrated research system connecting molecular mechanisms with translational development in immunotherapy, vaccine adjuvants, and drug discovery.",
+    ],
+    aboutEyebrow: "Profile & Vision",
+    aboutName: "Prof. Yonghui Zhang",
+    aboutTitle:
+      "Tenured Professor and Ph.D. Supervisor at the School of Pharmaceutical Sciences, Tsinghua University; Investigator at the Tsinghua-Peking Center for Life Sciences; Chang Jiang Scholar; Fellow of the Royal Society of Chemistry; recipient of the Shulan Medical Youth Award.",
+    papersLabel: "Publications",
+    patentsLabel: "Patents",
+    aboutText1:
+      "Prof. Yonghui Zhang has long focused on isoprenoid metabolism and immune regulation, seeking to understand how metabolic intermediates shape immune recognition, inflammatory responses, and therapeutic opportunities. The lab has made original discoveries in γδ T cell antigen recognition, the mevalonate pathway and vaccine adjuvants, FPP/GGPP-mediated immune regulation, integrin drug design, and small-molecule discovery.",
+    aboutText2:
+      "Taking isoprenoid metabolism as a central entry point, the lab studies how metabolic intermediates serve as immune signals, regulatory nodes, and drug targets, integrating chemical biology, immunology, structural biology, and drug discovery from molecular mechanisms to disease intervention.",
+    researchEyebrow: "Research Directions",
+    researchTitle: "Research Directions",
+    researchDesc:
+      "Following metabolic intermediates across immune recognition, inflammation, pathogen immune evasion, and therapeutic discovery.",
+    researchDirections: [
+      {
+        title: "Isoprenoid-metabolism-driven γδ T cell antigen recognition",
+        icon: Dna,
+        text: "We dissect molecular interactions among phosphoantigens, BTN3A1/BTN2A1, and Vγ9Vδ2 T cell receptors to define non-HLA-dependent immune surveillance and advance universal γδ T cell therapy strategies.",
+      },
+      {
+        title: "The mevalonate pathway and innate immune regulation",
+        icon: ShieldCheck,
+        text: "We investigate how the mevalonate pathway and metabolites such as GGPP regulate dendritic cells, macrophages, and pattern-recognition receptor signaling to develop metabolism-guided vaccine adjuvants.",
+      },
+      {
+        title: "Immune regulatory networks of FPP, GGPP and related intermediates",
+        icon: Microscope,
+        text: "We systematically study the roles of isoprenoid intermediates in inflammation, barrier immunity, humoral immunity, and autoimmunity to identify actionable metabolism–immunity nodes.",
+      },
+      {
+        title: "Pathogen isoprenoid metabolism and host immune evasion",
+        icon: FlaskConical,
+        text: "We explore how bacteria, viruses, and parasites exploit or reprogram isoprenoid metabolism to evade host immunity or sustain replication, revealing new targets for anti-infective drug development.",
+      },
+      {
+        title: "Innovative small-molecule design for disease intervention",
+        icon: Pill,
+        text: "By integrating structural biology, chemical biology, and medicinal chemistry, we develop small-molecule strategies targeting integrins, KRAS, UPPS, GGPPS and related proteins.",
+      },
+    ],
+    impactEyebrow: "Scientific Impact",
+    impactTitle: "Scientific Contributions",
+    contributions: [
+      {
+        title: "Defined the molecular mechanism of phosphoantigen recognition by γδ T cells",
+        text: "The lab revealed that phosphoantigens act as molecular glues promoting functional BTN3A1–BTN2A1 complexes and further clarified a plier-like mechanism for Vγ9Vδ2 T cell activation.",
+        refs: "Nature 2023 · Immunity 2019 · Immunity 2025",
+      },
+      {
+        title: "Proposed a metabolism-guided mechanism for vaccine adjuvant discovery",
+        text: "The lab identified the mevalonate pathway as a druggable target for adjuvant discovery and showed that inhibiting GGPP synthesis enhances antigen presentation.",
+        refs: "Cell 2018",
+      },
+      {
+        title: "Uncovered FPP-mediated cross-tissue immune regulation",
+        text: "The lab found that isoprenoid intermediates such as FPP participate in local inflammation and systemic immune regulation through ion-channel-related mechanisms.",
+        refs: "Nature 2026",
+      },
+      {
+        title: "Established a safety principle for integrin drug design",
+        text: "In collaboration with Prof. Timothy Springer, the lab uncovered mechanisms linking high-affinity integrin stabilization to thrombotic risk and proposed a water-mediated closed-state stabilization strategy.",
+        refs: "Cell 2022",
+      },
+      {
+        title: "Advanced innovative small-molecule drug discovery",
+        text: "The lab develops discovery programs around KRAS G12D, bacterial UPPS, parasitic GGPPS and other targets, combining mechanistic biology with translational chemistry.",
+        refs: "Cell Discovery 2022 · STM 2014",
+      },
+    ],
+    platformsEyebrow: "Translation Platforms",
+    platformsTitle: "Translational Platforms",
+    platformsDesc:
+      "Building a translational pipeline from molecular mechanism to clinical potential in immunotherapy, vaccine adjuvants, and innovative small molecules.",
+    platforms: [
+      {
+        title: "γδ T Cell Therapy Platform",
+        text: "Based on phosphoantigen recognition and BTN3A1/BTN2A1 mechanisms, the lab advances universal γδ T cell therapy strategies for solid tumors.",
+      },
+      {
+        title: "Next-Generation Vaccine Adjuvant Platform",
+        text: "Targeting the mevalonate pathway and GGPP regulation, the lab develops adjuvant systems with simplified processes, controllable costs, and enhanced humoral and cellular immunity.",
+      },
+      {
+        title: "Innovative Small-Molecule Platform",
+        text: "The lab develops integrin conformation modulators, KRAS G12D salt-bridge inhibitors, UPPS inhibitors, and anti-parasitic targeted molecules.",
+      },
+    ],
+    honorsEyebrow: "Honors",
+    honorsTitle: "Honors & Awards",
+    honors: [
+      "Excellence Award, National Disruptive Technology Innovation Competition (2024)",
+      "Annual Highlight Achievement of Tsinghua University (2023)",
+      "Chang Jiang Scholar, Ministry of Education (2021)",
+      "Fellow of the Royal Society of Chemistry, FRSC (2021)",
+      "Second Prize, Tianjin Natural Science Award (2020)",
+      "Shulan Medical Youth Award (2019)",
+    ],
+    pubsEyebrow: "Selected Publications",
+    pubsTitle: "Selected Publications",
+    joinEyebrow: "Join & Collaborate",
+    joinTitle: "Join Us & Collaborate",
+    joinText1:
+      "The lab welcomes postdoctoral fellows, Ph.D. students, and research staff with backgrounds in chemical biology, immunology, structural biology, medicinal chemistry, cell therapy, vaccinology, metabolomics, bioinformatics, and translational medicine.",
+    joinText2:
+      "We encourage interdisciplinary collaborations, especially in immunotherapy, vaccine adjuvants, inflammatory diseases, anti-infective drugs, and innovative small-molecule development.",
+    joinNote:
+      "Applicants are encouraged to provide a CV, representative publications, a statement of research interests, and referee information.",
+    contactTitle: "Contact",
+    website: "Lab Website",
+    email: "Email",
+    footer: "Zhang Yonghui Lab · Isoprenoid Metabolism & Immune Regulation",
+  },
+};
+
+const publications = [
+  "Yuan L. et al. Phosphoantigens glue butyrophilin 3A1 and 2A1 to activate Vγ9Vδ2 T cells. Nature. 2023;621:840–848.",
+  "Ji Z. et al. A metabolic alarmin from keratinocytes potentiates systemic humoral immunity. Nature. 2026;652:209–219.",
+  "Lin F.Y. et al. A general chemical principle for creating closure-stabilizing integrin inhibitors. Cell. 2022;185:3533–3550.e27.",
+  "Xia Y. et al. The mevalonate pathway is a druggable target for vaccine adjuvant discovery. Cell. 2018;175:1059–1073.e21.",
+  "Zhang M. et al. Structures of butyrophilin multimers reveal a plier-like mechanism for Vγ9Vδ2 T cell receptor activation. Immunity. 2025;58:1660–1669.",
+  "Yang Y. et al. A structural change in butyrophilin upon phosphoantigen binding underlies phosphoantigen-mediated Vγ9Vδ2 T cell activation. Immunity. 2019;50:1043–1053.e5.",
+  "Mao Z. et al. KRAS(G12D) can be targeted by potent inhibitors via formation of salt bridge. Cell Discovery. 2022;8:5.",
+  "Xia Y. et al. A combination therapy for KRAS-driven lung adenocarcinomas using lipophilic bisphosphonates and rapamycin. Science Translational Medicine. 2014;6:263ra161.",
+];
+
+function SectionTitle({ eyebrow, title, desc, light = false }) {
+  return (
+    <div className="mx-auto mb-12 max-w-3xl text-center">
+      <div
+        className={`mb-3 inline-flex items-center rounded-full border px-4 py-1 text-sm font-medium ${
+          light
+            ? "border-white/15 bg-white/10 text-purple-100"
+            : "border-purple-200 bg-purple-50 text-purple-800"
+        }`}
+      >
+        {eyebrow}
+      </div>
+      <h2 className={`text-3xl font-bold tracking-tight md:text-5xl ${light ? "text-white" : "text-slate-950"}`}>
+        {title}
+      </h2>
+      {desc && <p className={`mt-4 text-base leading-8 md:text-lg ${light ? "text-slate-200" : "text-slate-600"}`}>{desc}</p>}
+    </div>
+  );
+}
+
+export default function ZhangYonghuiLabWebsite() {
+  const [lang, setLang] = useState("zh");
+  const t = content[lang];
+  const navMap = useMemo(
+    () => [
+      ["#about", t.nav[0]],
+      ["#research", t.nav[1]],
+      ["#impact", t.nav[2]],
+      ["#publications", t.nav[3]],
+      ["#join", t.nav[4]],
+    ],
+    [t.nav]
+  );
+
+  return (
+    <main className="min-h-screen bg-[#4b1368] text-slate-900 selection:bg-purple-200">
+      <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#4b1368]/95 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+          <a href="#top" className="flex items-center gap-3 text-white">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 bg-white/10 shadow-lg">
+              <GraduationCap size={22} />
+            </div>
+            <div>
+              <div className="text-sm font-semibold tracking-widest text-white">{t.brand}</div>
+              <div className="text-xs text-purple-100/80">{t.brandSub}</div>
+            </div>
+          </a>
+          <div className="hidden items-center gap-6 text-sm text-purple-100 md:flex">
+            {navMap.map(([href, label]) => (
+              <a key={href} href={href} className="hover:text-white">
+                {label}
+              </a>
+            ))}
+          </div>
+          <button
+            onClick={() => setLang(lang === "zh" ? "en" : "zh")}
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15"
+          >
+            <Languages size={16} />
+            {lang === "zh" ? "EN" : "中文"}
+          </button>
+        </div>
+      </nav>
+
+      <section id="top" className="relative overflow-hidden px-6 py-24 text-white md:py-32">
+        <div className="absolute left-0 top-0 h-full w-full bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.18),transparent_30%),radial-gradient(circle_at_80%_10%,rgba(201,177,143,0.22),transparent_32%)]" />
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#f7f4f8] to-transparent" />
+        <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_.95fr]">
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm text-purple-50 shadow-2xl backdrop-blur">
+              <FlaskConical size={16} /> {t.heroBadge}
+            </div>
+            <h1 className="max-w-4xl font-serif text-5xl font-black tracking-tight md:text-7xl">{t.heroTitle}</h1>
+            <p className="mt-4 text-2xl font-semibold text-[#d7c39a] md:text-3xl">{t.heroSubtitle}</p>
+            <p className="mt-6 max-w-3xl text-xl leading-9 text-purple-50/90 md:text-2xl">{t.heroText}</p>
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+              <Button asChild className="rounded-full bg-white px-6 py-6 text-base font-semibold text-[#4b1368] hover:bg-purple-50">
+                <a href="#research">
+                  {t.ctaResearch} <ArrowRight className="ml-2" size={18} />
+                </a>
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="rounded-full border-white/25 bg-white/10 px-6 py-6 text-base text-white hover:bg-white/15 hover:text-white"
+              >
+                <a href="mailto:zhangyonghui@tsinghua.edu.cn">{t.ctaContact}</a>
+              </Button>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7, delay: 0.1 }}>
+            <Card className="rounded-[2rem] border-white/15 bg-white/12 shadow-2xl backdrop-blur-xl">
+              <CardContent className="p-7 md:p-9">
+                <div className="mb-6 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-[#e6d6b2]">
+                  <Sparkles size={18} /> {t.highlightsTitle}
+                </div>
+                <div className="space-y-4">
+                  {t.highlights.map((item) => (
+                    <div key={item} className="flex gap-4 rounded-2xl border border-white/10 bg-white/10 p-4 text-purple-50">
+                      <div className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full bg-[#d7c39a]" />
+                      <p className="leading-7">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </section>
+
+      <section id="about" className="bg-[#f7f4f8] px-6 py-20 md:py-28">
+        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[.75fr_1.25fr]">
+          <div className="rounded-[2rem] bg-[#4b1368] p-8 text-white shadow-2xl">
+            <div className="mb-8 flex h-20 w-20 items-center justify-center rounded-full border border-white/20 bg-white/10">
+              <Users size={36} />
+            </div>
+            <h2 className="font-serif text-3xl font-bold">{t.aboutName}</h2>
+            <p className="mt-4 leading-8 text-purple-50/85">{t.aboutTitle}</p>
+            <div className="mt-8 grid grid-cols-2 gap-4">
+              <div className="rounded-2xl bg-white/10 p-4">
+                <div className="text-3xl font-bold text-[#e6d6b2]">70+</div>
+                <div className="mt-1 text-sm text-purple-100/75">{t.papersLabel}</div>
+              </div>
+              <div className="rounded-2xl bg-white/10 p-4">
+                <div className="text-3xl font-bold text-[#e6d6b2]">10+</div>
+                <div className="mt-1 text-sm text-purple-100/75">{t.patentsLabel}</div>
+              </div>
+            </div>
+          </div>
+          <div className="rounded-[2rem] border border-purple-100 bg-white p-8 shadow-sm md:p-10">
+            <div className="mb-4 text-sm font-semibold uppercase tracking-[0.22em] text-[#4b1368]">{t.aboutEyebrow}</div>
+            <p className="text-lg leading-9 text-slate-700">{t.aboutText1}</p>
+            <p className="mt-6 text-lg leading-9 text-slate-700">{t.aboutText2}</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="research" className="bg-white px-6 py-20 md:py-28">
+        <SectionTitle eyebrow={t.researchEyebrow} title={t.researchTitle} desc={t.researchDesc} />
+        <div className="mx-auto grid max-w-7xl gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {t.researchDirections.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.06 }}
+              >
+                <Card className="h-full rounded-[1.75rem] border-purple-100 bg-[#fbf9fc] shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+                  <CardContent className="p-7">
+                    <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-purple-100 text-[#4b1368]">
+                      <Icon size={26} />
+                    </div>
+                    <h3 className="text-xl font-bold leading-8 text-slate-950">{item.title}</h3>
+                    <p className="mt-4 leading-8 text-slate-600">{item.text}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            );
+          })}
+        </div>
+      </section>
+
+      <section id="impact" className="bg-[#f7f4f8] px-6 py-20 md:py-28">
+        <SectionTitle eyebrow={t.impactEyebrow} title={t.impactTitle} />
+        <div className="mx-auto max-w-6xl space-y-5">
+          {t.contributions.map((item, index) => (
+            <motion.div
+              key={item.title}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.05 }}
+              className="grid gap-4 rounded-[1.75rem] border border-purple-100 bg-white p-6 shadow-sm md:grid-cols-[80px_1fr] md:p-7"
+            >
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#4b1368] text-2xl font-black text-[#e6d6b2]">
+                {index + 1}
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-slate-950">{item.title}</h3>
+                <p className="mt-3 leading-8 text-slate-700">{item.text}</p>
+                <div className="mt-4 inline-flex rounded-full bg-[#efe6f3] px-4 py-1.5 text-sm font-semibold text-[#4b1368]">
+                  {item.refs}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-[#4b1368] px-6 py-20 text-white md:py-28">
+        <SectionTitle eyebrow={t.platformsEyebrow} title={t.platformsTitle} desc={t.platformsDesc} light />
+        <div className="mx-auto grid max-w-6xl gap-5 md:grid-cols-3">
+          {t.platforms.map((platform, index) => (
+            <Card key={platform.title} className="rounded-[1.75rem] border-white/10 bg-white/10 text-white backdrop-blur">
+              <CardContent className="p-7">
+                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-white text-[#4b1368]">
+                  <span className="text-xl font-black">{index + 1}</span>
+                </div>
+                <h3 className="text-2xl font-bold">{platform.title}</h3>
+                <p className="mt-4 leading-8 text-purple-50/85">{platform.text}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      <section className="bg-white px-6 py-20 md:py-28">
+        <SectionTitle eyebrow={t.honorsEyebrow} title={t.honorsTitle} />
+        <div className="mx-auto grid max-w-5xl gap-4 md:grid-cols-2">
+          {t.honors.map((honor) => (
+            <div key={honor} className="flex items-center gap-4 rounded-3xl border border-purple-100 bg-[#fbf9fc] p-5 shadow-sm">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#efe6f3] text-[#4b1368]">
+                <Trophy size={22} />
+              </div>
+              <span className="font-medium leading-7 text-slate-700">{honor}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="publications" className="bg-[#f7f4f8] px-6 py-20 md:py-28">
+        <SectionTitle eyebrow={t.pubsEyebrow} title={t.pubsTitle} />
+        <div className="mx-auto max-w-5xl rounded-[2rem] border border-purple-100 bg-white p-4 shadow-sm md:p-6">
+          <ol className="space-y-3">
+            {publications.map((pub, index) => (
+              <li key={pub} className="grid gap-4 rounded-2xl bg-[#fbf9fc] p-5 md:grid-cols-[42px_1fr]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#4b1368] text-sm font-bold text-white">
+                  {index + 1}
+                </div>
+                <p className="leading-8 text-slate-700">{pub}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section id="join" className="bg-white px-6 py-20 md:py-28">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1.1fr_.9fr]">
+          <div className="rounded-[2rem] border border-purple-100 bg-[#fbf9fc] p-8 shadow-sm md:p-10">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-purple-100 px-4 py-2 text-sm font-semibold text-[#4b1368]">
+              <Users size={16} /> {t.joinEyebrow}
+            </div>
+            <h2 className="font-serif text-3xl font-bold tracking-tight text-slate-950 md:text-5xl">{t.joinTitle}</h2>
+            <p className="mt-6 text-lg leading-9 text-slate-700">{t.joinText1}</p>
+            <p className="mt-4 text-lg leading-9 text-slate-700">{t.joinText2}</p>
+            <div className="mt-8 rounded-3xl border border-purple-100 bg-white p-5 text-slate-700">{t.joinNote}</div>
+          </div>
+          <div className="rounded-[2rem] bg-[#4b1368] p-8 text-white shadow-2xl md:p-10">
+            <BookOpen className="mb-6 text-[#e6d6b2]" size={40} />
+            <h3 className="font-serif text-3xl font-bold">{t.contactTitle}</h3>
+            <div className="mt-8 space-y-5">
+              <a
+                href="https://cz29583149-1.jzfkw.net/"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-between rounded-3xl border border-white/10 bg-white/10 p-5 transition hover:bg-white/15"
+              >
+                <span className="leading-7">
+                  {t.website}
+                  <br />
+                  <span className="text-sm text-purple-100/75">cz29583149-1.jzfkw.net</span>
+                </span>
+                <ExternalLink size={20} />
+              </a>
+              <a
+                href="mailto:zhangyonghui@tsinghua.edu.cn"
+                className="flex items-center justify-between rounded-3xl border border-white/10 bg-white/10 p-5 transition hover:bg-white/15"
+              >
+                <span className="leading-7">
+                  {t.email}
+                  <br />
+                  <span className="text-sm text-purple-100/75">zhangyonghui@tsinghua.edu.cn</span>
+                </span>
+                <Mail size={20} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="bg-[#4b1368] px-6 py-10 text-center text-sm text-purple-100/75">
+        <div className="mx-auto max-w-7xl">© {t.footer}</div>
+      </footer>
+    </main>
+  );
+}
